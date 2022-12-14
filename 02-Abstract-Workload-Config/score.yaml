@@ -1,0 +1,25 @@
+apiVersion: score.dev/v1b1
+
+metadata:
+  name: app-workload
+
+containers:
+  hello:
+    image: 
+    variables:
+        CONNECTION_STRING: postgresql://${resources.app-db.username}:${resources.app-db.password}@${resources.app-db.host}:${resources.app-db.port}/${resources.app-db.name}
+    command: ["/bin/sh"]
+    args: ["-c", "while true; do echo This is the CloudSQL Connection String: $CONNECTION_STRING !; sleep 5; done"]
+resources:
+  app-db:
+    type: postgres
+    properties:
+      host:
+        default: localhost
+      port:
+        default: 5432
+      name:
+      username:
+        secret: true
+      password:
+        secret: true
